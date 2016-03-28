@@ -1,0 +1,6 @@
+blog_show:
+    path: /blog/{slug}
+    defaults: { _controller: "MyBundle:Blog:show" }
+
+blog_edit:
+    path: /blog/{slug}/edit

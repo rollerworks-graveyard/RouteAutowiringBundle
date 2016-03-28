@@ -1,0 +1,3 @@
+news_show:
+    path: /news
+    defaults: { _controller: "MyBundle:News:list" }
