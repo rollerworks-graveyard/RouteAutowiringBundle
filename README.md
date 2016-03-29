@@ -8,9 +8,8 @@ For example you have BundleA which defines some routes, to use them you
 need to explicitly import them, but if you remove/disable the bundle the
 application breaks because it can't find the resource files anymore.
 
-When you automatically enabling them in the routing file in app/
-you can't configure the prefix. And sometimes you rather don't
-want to enable all route collections.
+When you automatically enable them you can't keep the prefix consistent.
+And sometimes you rather don't want to enable all route collections.
 
 In practice you define your routes as normal, but instead of importing them
 from a file or service you load them using the autowiring system.
@@ -69,7 +68,7 @@ registered whenever you import a route collection.
 
 ### Registering routes for loading
 
-Say you have an `AcmeShopBundle` the following route collections:
+Say you have an `AcmeShopBundle` with the following route collections:
 
 ```yaml
 # Resources/config/routing/frontend.yml
@@ -115,8 +114,9 @@ class AcmeShopExtension extends Extension
 }
 ```
 
-The `@AcmeShopBundle/Resources/config/routing/frontend.yml` will be imported (*or registered*)
-in the 'frontend' routing-slot.
+The `@AcmeShopBundle/Resources/config/routing/frontend.yml` resource will be imported (*or registered*)
+in the 'frontend' routing-slot. And the `@AcmeShopBundle/Resources/config/routing/backend.yml`
+resource will be imported in the 'backend' routing slot.
 
 **Note:**
 
@@ -125,9 +125,6 @@ in the 'frontend' routing-slot.
 >
 > See also: [Including External Routing Resources](https://symfony.com/doc/current/book/routing.html#including-external-routing-resources)
 
-The same goes the `@AcmeShopBundle/Resources/config/routing/backend.yml` which will be imported
-in the 'backend' routing slot.
-
 **Tip:** You can import multiple routing resources per slot :+1:
 
 ```php
@@ -135,15 +132,14 @@ $routeImporter->import('@AcmeShopBundle/Resources/config/routing/frontend.yml', 
 $routeImporter->import('@AcmeShopBundle/Resources/config/routing/extra.yml', 'frontend');
 ```
 
-The import will guess the correct resource-type, but for special ones (like a service)
-you need to provide the third parameter.
+The import will try to guess the correct resource-type, but for special ones (like a service)
+you need to provide the type in the third parameter:
 
 ```php
 $routeImporter->import('@AcmeShopBundle/Resources/config/routing/frontend.yml', 'frontend', 'yaml');
 ```
 
-Import multiple resources with the same slot? Use the second argument of `RouteImporter`
-to provide a default (for the current instance):
+Import multiple resources to the same slot? Provide a default (for the current instance):
 
 ```php
 $routeImporter = new RouteImporter($container, 'frontend');
@@ -153,7 +149,7 @@ $routeImporter->import('@AcmeShopBundle/Resources/config/routing/backend.yml', '
 
 ### Loading registered routes
 
-Ones your routes are imported into there routing-slot it's time
+Ones your routes are imported into there routing-slot's it's time
 to load them into the application's routing schema.
 
 Normally you would use something like this:
@@ -195,28 +191,28 @@ _frontend:
     prefix:   /
 
 _backend:
-    resource: "frontend"
+    resource: "backend"
     type: rollerworks_autowiring
     prefix: backend/
 ```
 
-That's it! All the routes that were imported in the 'frontend' slot are now loaded
-into the applications routing schema.
+That's it! All the routes that were imported in the 'frontend' and 'backend' slots
+are now loaded into the applications routing schema.
 
 **But wait, what if there are no routes imported for the slot?**
 
-Then nothing happens, the bundle is designed to make configuration easy.
+Then nothing happens, this bundle is designed to make configuration easy.
 So when there are routes imported for the slot it simple returns an empty Collection,
 which in practice is never used.
 
 ### 3rd part import example
 
-As the Symfony routing system allows to import any route resource from a routing file
+As the Symfony routing system allows to load any route resource from a routing file
 you can actually load a routing-slot from within from another routing slot.
 
 Say you want to allow others to "extend" your bundle's routing schema:
 
-First import the main parts.
+First import the main parts in the application's routing file:
 
 ```yaml
 # app/config/routing.yml
@@ -260,7 +256,7 @@ _imports:
     type: rollerworks_autowiring
 ```
 
-Others can now import there routing schema(s) into the
+Others can now easily import there routing schema(s) into the
 `acme_shop.frontend` routing-slot.
 
 Versioning
