@@ -26,5 +26,10 @@
     "require-dev": {
         "symfony/phpunit-bridge": "^3.0",
         "matthiasnoback/symfony-dependency-injection-test": "^0.7.6"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.2-dev"
+        }
     }
 }
