@@ -83,7 +83,7 @@ _cart:
 ```
 
 ```yaml
-# Resources/config/routing/frontend.yml
+# Resources/config/routing/backend.yml
 
 _products:
     resource: "routing/backend/products.yml"
@@ -205,7 +205,7 @@ Then nothing happens, this bundle is designed to make configuration easy.
 So when there are routes imported for the slot it simple returns an empty Collection,
 which in practice is never used.
 
-### 3rd part import example
+### Third-party import example
 
 As the Symfony routing system allows to load any route resource from a routing file
 you can actually load a routing-slot from within from another routing slot.
