@@ -3,17 +3,14 @@
 # Always use LF
 core.autocrlf=lf
 
-# files
-.gitignore export-ignore
+.editorconfig
 .gitattributes export-ignore
-.gitmodules export-ignore
-.travis.yml export-ignore
-.gush.yml export-ignore
+.gitignore export-ignore
 .php_cs export-ignore
-
-# test config
+.scrutinizer.yml export-ignore
+.styleci.yml export-ignore
+.travis.yml export-ignore
+.github export-ignore
 phpunit.xml.dist export-ignore
-
-# dirs
 /tests export-ignore
 /doc export-ignore
