@@ -25,6 +25,7 @@
     },
     "require-dev": {
         "symfony/phpunit-bridge": "^3.2",
+        "symfony/yaml": "^3.0",
         "matthiasnoback/symfony-dependency-injection-test": "^0.7.6"
     },
     "extra": {
