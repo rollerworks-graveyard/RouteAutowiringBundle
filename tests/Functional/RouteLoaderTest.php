@@ -30,8 +30,7 @@ final class RouteLoaderTest extends FunctionalTestCase
     {
         $client = self::newClient();
 
-        $this->expectException(NotFoundHttpException::class);
-        $this->expectExceptionMessage('/backend/products/list');
+        $this->setExpectedException(NotFoundHttpException::class, '/backend/products/list');
 
         $client->request('GET', '/backend/products/list');
     }
