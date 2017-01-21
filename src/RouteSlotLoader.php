@@ -12,6 +12,8 @@
 namespace Rollerworks\Bundle\RouteAutowiringBundle;
 
 use Symfony\Component\Config\Loader\Loader;
+use Symfony\Component\Config\Resource\ResourceInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\RouteCollection;
 
 /**
@@ -22,18 +24,32 @@ use Symfony\Component\Routing\RouteCollection;
 final class RouteSlotLoader extends Loader
 {
     /**
-     * @var RouteCollection[]
+     * @var ContainerInterface
+     */
+    private $container;
+
+    /**
+     * @var string[]
      */
     private $slots;
 
     /**
+     * @var ResourceInterface[]
+     */
+    private $resources;
+
+    /**
      * Constructor.
      *
-     * @param RouteCollection[] $slots
+     * @param ContainerInterface  $container
+     * @param string[]            $slots
+     * @param ResourceInterface[] $resources
      */
-    public function __construct(array $slots)
+    public function __construct(ContainerInterface $container, array $slots, array $resources = [])
     {
         $this->slots = $slots;
+        $this->container = $container;
+        $this->resources = $resources;
     }
 
     /**
@@ -42,16 +58,22 @@ final class RouteSlotLoader extends Loader
      * @param mixed       $resource Some value that will resolve to a callable
      * @param string|null $type     The resource type
      *
-     * @return RouteCollection Returns an empty RouteCollection object when noå routes
-     *                         are registered for the slot.
+     * @return RouteCollection returns an empty RouteCollection object when noå routes
+     *                         are registered for the slot
      */
     public function load($resource, $type = null)
     {
         if (!isset($this->slots[$resource])) {
-            return new RouteCollection();
+            $collection = new RouteCollection();
+        } else {
+            $collection = $this->container->get($this->slots[$resource])->build();
         }
 
-        return $this->slots[$resource];
+        foreach ($this->resources as $trackedResource) {
+            $collection->addResource($trackedResource);
+        }
+
+        return $collection;
     }
 
     /**

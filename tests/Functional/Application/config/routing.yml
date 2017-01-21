@@ -1,0 +1,9 @@
+_frontend:
+    resource: "frontend"
+    type: rollerworks_autowiring
+    prefix:   /
+
+_backend:
+    resource: "backend"
+    type: rollerworks_autowiring
+    prefix: backend/

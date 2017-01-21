@@ -13,49 +13,41 @@ namespace Rollerworks\Bundle\RouteAutowiringBundle\Tests\DependencyInjection\Com
 
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
 use Rollerworks\Bundle\RouteAutowiringBundle\DependencyInjection\Compiler\RouteAutowiringPass;
+use Rollerworks\Bundle\RouteAutowiringBundle\ResourceLoader;
 use Rollerworks\Bundle\RouteAutowiringBundle\RouteImporter;
 use Rollerworks\Bundle\RouteAutowiringBundle\RouteSlotLoader;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\Config\Loader\LoaderResolver;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Routing\Loader\YamlFileLoader;
-use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 
 final class RouteAutowiringPassTest extends AbstractCompilerPassTestCase
 {
-    protected function registerCompilerPass(ContainerBuilder $container)
-    {
-        $container->addCompilerPass(new RouteAutowiringPass());
-    }
-
     /**
      * @before
      */
     public function registerRouteLoader()
     {
+        $this->container->register('routing.resolver', LoaderResolver::class)
+            ->setArguments(
+                [[new Reference('routing.loader'), new Reference('rollerworks_route_autowiring.route_loader')]]
+            )
+            ->setPublic(false);
+
         $this->container->register('rollerworks_route_autowiring.route_loader', RouteSlotLoader::class)
-            ->setArguments([[]]);
+            ->setArguments([new Reference('service_container'), [], []]);
+
+        $this->container->register('rollerworks_route_autowiring.resource_loader', ResourceLoader::class)
+            ->setArguments([new Reference('routing.resolver')])
+            ->setPublic(false);
 
         $this->container->register('file_locator', FileLocator::class)
             ->setArguments([dirname(__DIR__).'/../Fixtures/']);
 
         $this->container->register('routing.loader', YamlFileLoader::class)
             ->setArguments([new Reference('file_locator')]);
-    }
-
-    private function assertLoaderHasSlots(array $slots)
-    {
-        $paramValue = [];
-
-        foreach ($slots as $slot) {
-            $paramValue[$slot] = (new Definition(RouteCollection::class, []))->setFactory(
-                [new Reference('rollerworks_route_autowiring.routing_slot.'.$slot), 'build']
-            );
-        }
-
-        $this->assertContainerBuilderHasServiceDefinitionWithArgument('rollerworks_route_autowiring.route_loader', 0, $paramValue);
     }
 
     /**
@@ -122,23 +114,20 @@ final class RouteAutowiringPassTest extends AbstractCompilerPassTestCase
         $this->assertLoaderHasSlots(['main']);
     }
 
-    /**
-     * @test
-     */
-    public function get_the_route_loader()
+    protected function registerCompilerPass(ContainerBuilder $container)
     {
-        $routeImporter = new RouteImporter($this->container);
-        $routeImporter->import('first.yml', 'main');
-        $routeImporter->import('second.yml', 'main');
-        $this->compile();
+        $container->addCompilerPass(new RouteAutowiringPass());
+        $container->setParameter('kernel.debug', true);
+    }
 
-        /** @var RouteSlotLoader $loader */
-        $loader = $this->container->get('rollerworks_route_autowiring.route_loader');
+    private function assertLoaderHasSlots(array $slots)
+    {
+        $paramValue = [];
 
-        // Get all the registered routes and ensure the imported ones are registered.
-        // We don't care about the routes themselves only that they are registered.
-        $registeredRoutes = array_keys(iterator_to_array($loader->load('main')->getIterator()));
+        foreach ($slots as $slot) {
+            $paramValue[$slot] = 'rollerworks_route_autowiring.routing_slot.'.$slot;
+        }
 
-        $this->assertEquals(['blog_show', 'blog_edit', 'news_show'], $registeredRoutes);
+        $this->assertContainerBuilderHasServiceDefinitionWithArgument('rollerworks_route_autowiring.route_loader', 1, $paramValue);
     }
 }

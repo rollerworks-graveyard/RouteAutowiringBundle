@@ -5,8 +5,15 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="rollerworks_route_autowiring.route_loader" class="Rollerworks\Bundle\RouteAutowiringBundle\RouteSlotLoader">
-            <argument type="collection" />
+        <service id="rollerworks_route_autowiring.route_loader" class="Rollerworks\Bundle\RouteAutowiringBundle\RouteSlotLoader" public="false">
+            <tag name="routing.loader" />
+            <argument type="service" id="service_container" />
+            <argument type="collection" /> <!-- Routing imports. Populated by RouteAutowiringPass -->
+            <argument type="collection" /> <!-- Tracked resources. Populated by RouteAutowiringPass -->
+        </service>
+
+        <service id="rollerworks_route_autowiring.resource_loader" class="Rollerworks\Bundle\RouteAutowiringBundle\ResourceLoader" public="false">
+            <argument type="service" id="routing.resolver" />
         </service>
     </services>
 </container>
