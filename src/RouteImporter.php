@@ -49,11 +49,6 @@ final class RouteImporter
     private $defaultSlot;
 
     /**
-     * @var ResourceInterface[]
-     */
-    private $resources;
-
-    /**
      * Constructor.
      *
      * @param ContainerBuilder $container   the ContainerBuilder instance
