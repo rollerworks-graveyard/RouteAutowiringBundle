@@ -1,0 +1,9 @@
+backend_products_show:
+    path: /show/{id}
+    defaults: { _controller: "AppBundle:Main:foo" }
+    requirements:
+        id: '\d+'
+
+backend_products_list:
+    path: /list
+    defaults: { _controller: "AppBundle:Main:foo" }

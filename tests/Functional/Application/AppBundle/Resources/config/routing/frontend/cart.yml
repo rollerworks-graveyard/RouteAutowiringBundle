@@ -1,0 +1,7 @@
+frontend_cart_show:
+    path: /show
+    defaults: { _controller: "AppBundle:Main:foo" }
+
+frontend_cart_clear:
+    path: /clear
+    defaults: { _controller: "AppBundle:Main:foo" }

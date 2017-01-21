@@ -1,0 +1,5 @@
+parameters:
+    enable_backend: true
+
+imports:
+    - { resource: framework.yml }

@@ -17,7 +17,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 
 /**
@@ -41,18 +40,21 @@ final class RouteAutowiringPass implements CompilerPassInterface
             return;
         }
 
-        $serviceIds = $container->findTaggedServiceIds(self::TAG_NAME);
+        $slotsServiceIds = $container->findTaggedServiceIds(self::TAG_NAME);
+        $slotsToServiceIds = [];
 
         /** @var ParameterBag $parameterBag */
         $parameterBag = $container->getParameterBag();
         /** @var Definition[] $slotServices */
         $slotServices = [];
 
-        foreach ($serviceIds as $id => list($tag)) {
+        foreach ($slotsServiceIds as $id => list($tag)) {
             $slot = $parameterBag->resolveString($tag['slot']);
 
             if (!isset($slotServices[$slot])) {
-                $slotServices[$slot] = $this->createCollectionBuilder();
+                $slotServiceId = 'rollerworks_route_autowiring.routing_slot.'.$slot;
+                $slotServices[$slot] = $container->setDefinition($slotServiceId, $this->createCollectionBuilder());
+                $slotsToServiceIds[$slot] = $slotServiceId;
             }
 
             /** @var RouteResource $resource */
@@ -60,23 +62,16 @@ final class RouteAutowiringPass implements CompilerPassInterface
             $slotServices[$slot]->addMethodCall('import', [$resource->getResource(), '/', $resource->getType()]);
         }
 
-        /** @var Definition[] $loaders */
-        $loaders = [];
-
-        // The routing_slot services will be in-lined, but register them still so it's easier to write tests.
-        foreach ($slotServices as $slot => $definition) {
-            $container->setDefinition($id = 'rollerworks_route_autowiring.routing_slot.'.$slot, $definition);
-            $loaders[$slot] = (new Definition(RouteCollection::class, []))->setFactory([new Reference($id), 'build']);
-        }
-
-        $container->getDefinition('rollerworks_route_autowiring.route_loader')->replaceArgument(0, $loaders);
+        $container->getDefinition('rollerworks_route_autowiring.route_loader')->replaceArgument(1, $slotsToServiceIds);
     }
 
     private function createCollectionBuilder()
     {
         return (new Definition(RouteCollectionBuilder::class))
-            ->setArguments([new Reference('routing.loader')])
-            ->setPublic(false)
+            ->setArguments([new Reference('rollerworks_route_autowiring.resource_loader')])
+            // Route collections are loaded lazily to circumvent the container
+            // circular dependency of on this collection.
+            ->setPublic(true)
         ;
     }
 }

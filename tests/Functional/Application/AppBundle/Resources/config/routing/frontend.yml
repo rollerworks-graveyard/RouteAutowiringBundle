@@ -1,0 +1,7 @@
+_products:
+    resource: "frontend/products.yml"
+    prefix:   /products
+
+_cart:
+    resource: "frontend/cart.yml"
+    prefix:   /cart

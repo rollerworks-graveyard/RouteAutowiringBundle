@@ -11,13 +11,15 @@ application breaks because it can't find the resource files anymore.
 When you automatically enable them you can't keep the prefix consistent.
 And sometimes you rather don't want to enable all route collections.
 
+### How does it work?
+
 In practice you define your routes as normal, but instead of importing them
 from a file or service you load them using the autowiring system.
 
 Requirements
 ------------
 
-You need at least PHP 5.5 and the Symfony FrameworkBundle (3.0+).
+You need at least PHP 5.5 and the Symfony FrameworkBundle (2.8+ or 3.0+).
 
 Installation
 ------------
@@ -106,6 +108,7 @@ class AcmeShopExtension extends Extension
         // ...
 
         $routeImporter = new RouteImporter($container);
+        $routeImporter->addObjectResource($this);
         $routeImporter->import('@AcmeShopBundle/Resources/config/routing/frontend.yml', 'frontend');
         $routeImporter->import('@AcmeShopBundle/Resources/config/routing/backend.yml', 'backend');
     }
@@ -146,6 +149,36 @@ $routeImporter = new RouteImporter($container, 'frontend');
 $routeImporter->import('@AcmeShopBundle/Resources/config/routing/frontend.yml'); // is imported in the frontend slot
 $routeImporter->import('@AcmeShopBundle/Resources/config/routing/backend.yml', 'backend'); // is imported in the backend slot
 ```
+
+### Resource tracking
+
+The routing system is not directly aware of any related classes when registering
+your route imports (using the `RouteImporter`). Therefor removing a Bundle
+or changing configuration may not directly reload your routing schema
+(unless you use the `cache:clear` command).
+
+You need to register the Extension class and any other related class,
+like your Bundle's `Configuration` class, if changing them may cause
+a different routing import schema.
+
+To register an object (like the `Extension` class, and its parent(s)) use:
+
+`$routeImporter->addObjectResource($this);`
+
+Or to register a class (and its parent(s)): 
+
+`$routeImporter->addObjectClass($this);`
+
+To register any Symfony supported Resource (full path) use: 
+
+`$routeImporter->addResource(new FileResource('my-file-file-path.yml'));`
+
+**Note:** 
+
+> Resources are only tracked when debugging is enabled.
+>
+> Imported routes (`->import(...)`) are automatically tracked by the routing system,
+> only classes related to the import registering should be registered for tracking.
 
 ### Loading registered routes
 
@@ -202,13 +235,13 @@ are now loaded into the applications routing schema.
 **But wait, what if there are no routes imported for the slot?**
 
 Then nothing happens, this bundle is designed to make configuration easy.
-So when there are routes imported for the slot it simple returns an empty Collection,
+When there are no routes imported for the slot it simple returns an empty Collection,
 which in practice is never used.
 
 ### Third-party import example
 
 As the Symfony routing system allows to load any route resource from a routing file
-you can actually load a routing-slot from within from another routing slot.
+you can actually load a routing-slot from within from another routing-slot.
 
 Say you want to allow others to "extend" your bundle's routing schema:
 
