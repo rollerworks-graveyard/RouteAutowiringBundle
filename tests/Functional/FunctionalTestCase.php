@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the RollerworksSearch package.
+ * This file is part of the Rollerworks RouteAutowiringBundle package.
  *
  * (c) Sebastiaan Stok <s.stok@rollerscapes.net>
  *

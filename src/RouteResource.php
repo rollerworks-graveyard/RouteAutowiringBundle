@@ -18,6 +18,7 @@ namespace Rollerworks\Bundle\RouteAutowiringBundle;
  * and should not be used outside this package.
  *
  * @internal
+ *
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  */
 final class RouteResource
