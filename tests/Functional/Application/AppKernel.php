@@ -104,22 +104,23 @@ class AppKernel extends Kernel
             $bundle->build($container);
         }
 
-        $this->buildBundleless($container);
+        // Disabled because it breaks with dev requirements
+        // $this->buildBundleless($container);
 
         // ensure these extensions are implicitly loaded
         $container->getCompilerPassConfig()->setMergePass(new MergeExtensionConfigurationPass($extensions));
     }
 
-    private function buildBundleless(ContainerBuilder $container)
-    {
-        if ($container->getParameter('kernel.debug')) {
-            $configuration = new Configuration();
-            $configuration->setEvaluateExpressions(true);
-
-            $container->addCompilerPass(
-                new ValidateServiceDefinitionsPass($configuration),
-                PassConfig::TYPE_AFTER_REMOVING
-            );
-        }
-    }
+//    private function buildBundleless(ContainerBuilder $container)
+//    {
+//        if ($container->getParameter('kernel.debug')) {
+//            $configuration = new Configuration();
+//            $configuration->setEvaluateExpressions(true);
+//
+//            $container->addCompilerPass(
+//                new ValidateServiceDefinitionsPass($configuration),
+//                PassConfig::TYPE_AFTER_REMOVING
+//            );
+//        }
+//    }
 }

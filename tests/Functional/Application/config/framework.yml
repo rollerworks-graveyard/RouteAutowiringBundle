@@ -11,6 +11,12 @@ framework:
     default_locale:      en
     trusted_proxies:     []
     session:
-        storage_id: session.storage.filesystem
+        storage_id: session.storage.mock_file
     test:                ~
     assets: false
+    profiler:
+        collect: false
+
+services:
+    logger:
+        class: 'Psr\Log\NullLogger'
