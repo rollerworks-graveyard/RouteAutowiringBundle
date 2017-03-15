@@ -17,7 +17,9 @@
         "psr-4": {
             "Rollerworks\\Bundle\\RouteAutowiringBundle\\": "src/"
         },
-        "exclude-from-classmap": ["test/"]
+        "exclude-from-classmap": [
+            "test/"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
@@ -25,12 +27,12 @@
         }
     },
     "require-dev": {
-        "symfony/phpunit-bridge": "^3.2",
+        "symfony/phpunit-bridge": "^3.2.6",
         "symfony/yaml": "^2.8.9 || ^3.0",
         "symfony/property-access": "^2.8.9 || ^3.0",
         "symfony/browser-kit": "^2.8.9 || ^3.0",
-        "matthiasnoback/symfony-dependency-injection-test": "^0.7.6",
-        "matthiasnoback/symfony-service-definition-validator": "^1.2.6"
+        "matthiasnoback/symfony-dependency-injection-test": "^1.1.0",
+        "matthiasnoback/symfony-service-definition-validator": "^1.2.7"
     },
     "extra": {
         "branch-alias": {
