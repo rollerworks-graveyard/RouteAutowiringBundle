@@ -9,7 +9,6 @@ framework:
     validation:          false
     templating:          false
     default_locale:      en
-    trusted_proxies:     []
     session:
         storage_id: session.storage.mock_file
     test:                ~
