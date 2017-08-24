@@ -1,0 +1,15 @@
+parameters:
+    autoload_files:
+        - vendor/autoload.php
+        - vendor/symfony/phpunit-bridge/bin/.phpunit/phpunit-5.7.19/vendor/autoload.php
+
+    ignoreErrors:
+        - '#Class Symfony\\Component\\ExpressionLanguage\\ExpressionLanguage not found and could not be autoloaded#'
+
+        # Tests
+        - '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::[a-zA-Z0-9_]+\(\)#'
+        #- '#Access to an undefined property Prophecy\\Prophecy\\ObjectProphecy::\$[a-zA-Z0-9_]+#'
+        #- '#Call to an undefined method PHPUnit_Framework_MockObject_MockObject::[a-zA-Z0-9_]+\(\)#'
+        #- '#expects\s+[^\s]+, PHPUnit_Framework_MockObject_MockObject(\[\])? given#'
+        #- '#does not accept PHPUnit_Framework_MockObject_MockObject#'
+        #- '#but returns PHPUnit_Framework_MockObject_MockObject#'
