@@ -36,7 +36,8 @@ in the [installation chapter](https://getcomposer.org/doc/00-intro.md)
 of the Composer documentation.
 
 Then, enable the bundle by adding it to the list of registered bundles
-in the `app/AppKernel.php` file of your project:
+in the `app/AppKernel.php` file of your project (you can skip this step
+when you're using Symfony Flex):
 
 ```php
 <?php
