@@ -27,6 +27,12 @@ install:
     - if [ "$DEPENDENCIES" != "low" ]; then composer update --prefer-dist --no-progress --no-suggest --ansi; fi;
     - if [ "$DEPENDENCIES" == "low" ]; then composer update --prefer-dist --no-progress --no-suggest --ansi --prefer-lowest; fi;
 
+    - |
+        # Temp fix `matthiasnoback/symfony-dependency-injection-test` doesn't support Symfony 4 yet
+        if [[ $DEPENDENCIES = 'dev' ]]; then
+            composer require --no-update "symfony/dependency-injection:v4.0.0-BETA1 as 3.4"
+        fi;
+
 script:
     - export SYMFONY_PHPUNIT_VERSION=5.7.19
     - export SYMFONY_PHPUNIT_REMOVE="symfony/yaml"
