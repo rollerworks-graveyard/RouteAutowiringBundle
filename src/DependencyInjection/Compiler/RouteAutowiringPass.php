@@ -60,6 +60,7 @@ final class RouteAutowiringPass implements CompilerPassInterface
             /** @var RouteResource $resource */
             $resource = $container->get($id);
             $slotServices[$slot]->addMethodCall('import', [$resource->getResource(), '/', $resource->getType()]);
+            $container->removeDefinition($id);
         }
 
         $container->getDefinition('rollerworks_route_autowiring.route_loader')->replaceArgument(1, $slotsToServiceIds);
