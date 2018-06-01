@@ -11,13 +11,14 @@
 
 namespace Rollerworks\Bundle\RouteAutowiringBundle\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Rollerworks\Bundle\RouteAutowiringBundle\RouteSlotLoader;
 use Symfony\Component\Config\Resource\ResourceInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 
-final class RouteSlotLoaderTest extends \PHPUnit_Framework_TestCase
+final class RouteSlotLoaderTest extends TestCase
 {
     /** @test */
     public function it_supports_only_autowired_routes()

@@ -11,9 +11,9 @@
 
 namespace Rollerworks\Bundle\RouteAutowiringBundle;
 
+use Psr\Container\ContainerInterface;
 use Symfony\Component\Config\Loader\Loader;
 use Symfony\Component\Config\Resource\ResourceInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\RouteCollection;
 
 /**
@@ -45,7 +45,7 @@ final class RouteSlotLoader extends Loader
      * @param string[]            $slots
      * @param ResourceInterface[] $resources
      */
-    public function __construct(ContainerInterface $container, array $slots, array $resources = [])
+    public function __construct($container, array $slots, array $resources = [])
     {
         $this->slots = $slots;
         $this->container = $container;

@@ -13,6 +13,7 @@ namespace Rollerworks\Bundle\RouteAutowiringBundle\DependencyInjection\Compiler;
 
 use Rollerworks\Bundle\RouteAutowiringBundle\RouteResource;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\Compiler\ServiceLocatorTagPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
@@ -63,7 +64,17 @@ final class RouteAutowiringPass implements CompilerPassInterface
             $container->removeDefinition($id);
         }
 
-        $container->getDefinition('rollerworks_route_autowiring.route_loader')->replaceArgument(1, $slotsToServiceIds);
+        $routeLoaderDef = $container->getDefinition('rollerworks_route_autowiring.route_loader');
+
+        if (class_exists(ServiceLocatorTagPass::class)) {
+            $refMap = [];
+            foreach ($slotsToServiceIds as $id => $ref) {
+                $refMap[$ref] = new Reference($ref);
+            }
+            $routeLoaderDef->replaceArgument(0, ServiceLocatorTagPass::register($container, $refMap));
+        }
+
+        $routeLoaderDef->replaceArgument(1, $slotsToServiceIds);
     }
 
     private function createCollectionBuilder()

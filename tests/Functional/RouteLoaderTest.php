@@ -30,9 +30,15 @@ final class RouteLoaderTest extends FunctionalTestCase
     {
         $client = self::newClient();
 
-        $this->setExpectedException(NotFoundHttpException::class, '/backend/products/list');
+        try {
+            $client->request('GET', '/backend/products/list');
+            $response = $client->getInternalResponse();
 
-        $client->request('GET', '/backend/products/list');
+            self::assertEquals(404, $response->getStatus());
+            self::assertContains('No route found for &quot;GET /backend/products/list&quot;', $response->getContent());
+        } catch (NotFoundHttpException $e) {
+            self::assertContains('No route found for "GET /backend/products/list"', $e->getMessage());
+        }
     }
 
     public function testRoutesToAutowiredRouteWhenEnabled()
