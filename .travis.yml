@@ -8,7 +8,9 @@ matrix:
         - php: 7.1
           env: deps='dev'
         - php: 7.1
-          env: deps='low' lint=1
+          env: deps='low'
+        - php: 7.1
+          env: lint=1
     fast_finish: true
 
 cache:
@@ -26,16 +28,14 @@ install:
     - if [[ ! $deps ]]; then composer update --prefer-dist --no-progress --no-suggest --ansi; fi
     - if [[ $deps = 'dev' ]]; then composer config minimum-stability dev && composer config prefer-stable false && composer update --prefer-dist --no-progress --no-suggest --ansi ; fi
     - if [[ $deps = 'low' ]]; then composer update --prefer-dist --no-progress --no-suggest --prefer-stable --prefer-lowest --ansi; fi
-    - |
-        # Temp fix `matthiasnoback/symfony-dependency-injection-test` doesn't support Symfony 4 yet
-        if [[ $DEPENDENCIES = 'dev' ]]; then
-            composer require --no-update "symfony/dependency-injection:v4.0.0-BETA1 as 3.4"
-        fi;
 
 script:
-    - export SYMFONY_PHPUNIT_VERSION=5.7.19
-    - export SYMFONY_PHPUNIT_REMOVE="symfony/yaml"
-    - export SYMFONY_DEPRECATIONS_HELPER=strict
-    - vendor/bin/simple-phpunit --verbose
+    - |
+        if [[ $deps = 'dev' ]]; then
+            export SYMFONY_DEPRECATIONS_HELPER=weak
+        else
+            export SYMFONY_DEPRECATIONS_HELPER=strict
+        fi
+    - if [[ ! $lint ]]; then vendor/bin/phpunit --verbose; fi
     - if [[ $lint = 1 ]]; then php php-cs-fixer.phar fix --dry-run --diff --no-ansi; fi
     - if [[ $lint = 1 ]]; then phpstan analyse -c phpstan.neon -l5 --ansi src tests; fi

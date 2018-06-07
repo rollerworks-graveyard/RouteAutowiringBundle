@@ -25,11 +25,10 @@ use Symfony\Component\Routing\RouteCollectionBuilder;
 
 final class RouteAutowiringPassTest extends AbstractCompilerPassTestCase
 {
-    /**
-     * @before
-     */
-    public function registerRouteLoader()
+    protected function setUp()
     {
+        parent::setUp();
+
         $this->container->register('routing.resolver', LoaderResolver::class)
             ->setArguments(
                 [[new Reference('routing.loader'), new Reference('rollerworks_route_autowiring.route_loader')]]

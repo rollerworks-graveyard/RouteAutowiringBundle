@@ -22,11 +22,10 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class RouteResourcePassTest extends AbstractCompilerPassTestCase
 {
-    /**
-     * @before
-     */
-    public function registerRouteLoader()
+    protected function setUp()
     {
+        parent::setUp();
+
         $this->container->register('rollerworks_route_autowiring.route_loader', RouteSlotLoader::class)
             ->setArguments([new Reference('service_container'), [], []]);
     }
