@@ -1,7 +1,7 @@
 Rollerworks RouteAutowiringBundle
 =================================
 
-The RollerworksRouteAutoWiringBundle allows to import multiple route collections
+The RollerworksRouteAutowiringBundle allows to import multiple route collections
 using an autowiring system.
 
 For example you have BundleA which defines some routes, to use them you
@@ -96,7 +96,7 @@ _products:
 You can import them using the following snippet:
 
 ```php
-use Rollerworks\Bundle\RouteAutoWiringBundle\RouteImporter;
+use Rollerworks\Bundle\RouteAutowiringBundle\RouteImporter;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 
