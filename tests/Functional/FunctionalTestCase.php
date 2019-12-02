@@ -12,6 +12,7 @@
 namespace Rollerworks\Bundle\RouteAutowiringBundle\Tests\Functional;
 
 use Rollerworks\Bundle\RouteAutowiringBundle\Tests\Functional\Application\AppKernel;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 abstract class FunctionalTestCase extends WebTestCase
@@ -28,13 +29,7 @@ abstract class FunctionalTestCase extends WebTestCase
         return AppKernel::class;
     }
 
-    /**
-     * @param array $options
-     * @param array $server
-     *
-     * @return \Symfony\Bundle\FrameworkBundle\Client
-     */
-    protected static function newClient(array $options = [], array $server = [])
+    protected static function newClient(array $options = [], array $server = []): KernelBrowser
     {
         $client = static::createClient(array_merge(['config' => 'default.yml'], $options), $server);
 

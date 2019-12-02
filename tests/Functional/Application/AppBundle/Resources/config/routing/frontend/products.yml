@@ -1,7 +1,7 @@
 frontend_products_show:
     path: /show
-    defaults: { _controller: "AppBundle:Main:foo" }
+    defaults: { _controller: 'Rollerworks\Bundle\RouteAutowiringBundle\Tests\Functional\Application\AppBundle\Controller\MainController::fooAction' }
 
 frontend_products_search:
     path: /search
-    defaults: { _controller: "AppBundle:Main:foo" }
+    defaults: { _controller: 'Rollerworks\Bundle\RouteAutowiringBundle\Tests\Functional\Application\AppBundle\Controller\MainController::fooAction' }

@@ -1,7 +1,7 @@
 Rollerworks RouteAutowiringBundle
 =================================
 
-The RollerworksRouteAutoWiringBundle allows to import multiple route collections
+The RollerworksRouteAutowiringBundle allows to import multiple route collections
 using an autowiring system.
 
 For example you have BundleA which defines some routes, to use them you
@@ -19,7 +19,7 @@ from a file or service you load them using the autowiring system.
 Requirements
 ------------
 
-You need at least PHP 5.6 and the Symfony FrameworkBundle.
+You need at least PHP 7.1 and the Symfony FrameworkBundle.
 
 Installation
 ------------
@@ -34,32 +34,6 @@ $ php composer.phar require rollerworks/route-autowiring-bundle
 This command requires you to have Composer installed globally, as explained
 in the [installation chapter](https://getcomposer.org/doc/00-intro.md)
 of the Composer documentation.
-
-Then, enable the bundle by adding it to the list of registered bundles
-in the `app/AppKernel.php` file of your project (**you can skip this step
-when you're using [Symfony Flex](https://github.com/symfony/flex)**):
-
-```php
-<?php
-// app/AppKernel.php
-
-// ...
-class AppKernel extends Kernel
-{
-    public function registerBundles()
-    {
-        $bundles = [
-            // ...
-            new Rollerworks\Bundle\RouteAutowiringBundle\RollerworksRouteAutowiringBundle(),
-            // ...
-        ];
-
-        // ...
-    }
-
-    // ...
-}
-```
 
 Basic usage
 -----------
@@ -104,7 +78,7 @@ class AcmeShopExtension extends Extension
 {
     // ...
 
-    public function load(array $configs, ContainerBuilder $container);
+    public function load(array $configs, ContainerBuilder $container): void
     {
         // ...
 

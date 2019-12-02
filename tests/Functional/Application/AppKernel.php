@@ -18,6 +18,7 @@ use Symfony\Component\HttpKernel\Kernel;
 class AppKernel extends Kernel
 {
     private $config;
+    private $projectDir;
 
     public function __construct($config, $debug = true)
     {
@@ -51,13 +52,13 @@ class AppKernel extends Kernel
         return $bundles;
     }
 
-    public function getRootDir()
+    public function getProjectDir()
     {
-        if (null === $this->rootDir) {
-            $this->rootDir = str_replace('\\', '/', __DIR__);
+        if (null === $this->projectDir) {
+            $this->projectDir = str_replace('\\', '/', __DIR__);
         }
 
-        return $this->rootDir;
+        return $this->projectDir;
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader)
@@ -77,6 +78,6 @@ class AppKernel extends Kernel
 
     public function unserialize($str)
     {
-        call_user_func_array([$this, '__construct'], unserialize($str));
+        \call_user_func_array([$this, '__construct'], unserialize($str));
     }
 }

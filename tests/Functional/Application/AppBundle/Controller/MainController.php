@@ -11,11 +11,10 @@
 
 namespace Rollerworks\Bundle\RouteAutowiringBundle\Tests\Functional\Application\AppBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-final class MainController extends Controller
+final class MainController
 {
     public function fooAction(Request $request)
     {

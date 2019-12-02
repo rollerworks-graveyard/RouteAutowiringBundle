@@ -34,10 +34,10 @@ final class RouteLoaderTest extends FunctionalTestCase
             $client->request('GET', '/backend/products/list');
             $response = $client->getInternalResponse();
 
-            self::assertEquals(404, $response->getStatus());
-            self::assertContains('No route found for &quot;GET /backend/products/list&quot;', $response->getContent());
+            self::assertEquals(404, $response->getStatusCode());
+            self::assertStringContainsString('No route found for &quot;GET /backend/products/list&quot;', $response->getContent());
         } catch (NotFoundHttpException $e) {
-            self::assertContains('No route found for "GET /backend/products/list"', $e->getMessage());
+            self::assertStringContainsString('No route found for "GET /backend/products/list"', $e->getMessage());
         }
     }
 

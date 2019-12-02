@@ -65,15 +65,13 @@ final class RouteImporter
     /**
      * Add resource to track for changes.
      *
-     * @param ResourceInterface $resource
-     *
      * @return $this The current instance
      */
     public function addResource(ResourceInterface $resource)
     {
         $resourceStr = (string) $resource;
 
-        $this->container->register(RouteAutowiringExtension::EXTENSION_ALIAS.'.resources.'.sha1($resourceStr), get_class($resource))
+        $this->container->register(RouteAutowiringExtension::EXTENSION_ALIAS.'.resources.'.sha1($resourceStr), \get_class($resource))
             ->setPublic(false)
             ->setArguments([$resourceStr])
             ->addTag(RouteResourcePass::TAG_NAME);
@@ -97,8 +95,6 @@ final class RouteImporter
 
     /**
      * Adds the given class hierarchy as tracked resources.
-     *
-     * @param \ReflectionClass $class
      *
      * @return $this The current instance
      */

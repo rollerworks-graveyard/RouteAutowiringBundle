@@ -24,12 +24,7 @@ final class RouteResourcePass implements CompilerPassInterface
 {
     const TAG_NAME = 'rollerworks_route_autowiring.tracked_resource';
 
-    /**
-     * You can modify the container here before it is dumped to PHP code.
-     *
-     * @param ContainerBuilder $container
-     */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->has('rollerworks_route_autowiring.route_loader') || !$container->getParameter('kernel.debug')) {
             return;
