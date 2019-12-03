@@ -12,6 +12,8 @@ parameters:
 
     checkNullables: false # To many false positives
     ignoreErrors:
+        - '#Strict comparison using === between null and Symfony\\Component\\Config\\Loader\\LoaderResolverInterface will always evaluate to false#'
+
         # Tests
         #- '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::[a-zA-Z0-9_]+\(\)#'
         #- '#Access to an undefined property Prophecy\\Prophecy\\ObjectProphecy::\$[a-zA-Z0-9_]+#'

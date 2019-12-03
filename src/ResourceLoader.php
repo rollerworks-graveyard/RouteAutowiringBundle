@@ -35,7 +35,7 @@ final class ResourceLoader extends Loader
     /**
      * Noop implementation, always returns false.
      */
-    public function supports($resource, string $type = null)
+    public function supports($resource, string $type = null): bool
     {
         return false;
     }

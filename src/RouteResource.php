@@ -18,8 +18,6 @@ namespace Rollerworks\Bundle\RouteAutowiringBundle;
  * and should not be used outside this package.
  *
  * @internal
- *
- * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  */
 final class RouteResource
 {
@@ -33,7 +31,7 @@ final class RouteResource
      */
     private $type;
 
-    public function __construct($resource, $type = null)
+    public function __construct($resource, ?string $type = null)
     {
         $this->resource = $resource;
         $this->type = $type;
@@ -47,10 +45,7 @@ final class RouteResource
         return $this->resource;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getType()
+    public function getType(): ?string
     {
         return $this->type;
     }
