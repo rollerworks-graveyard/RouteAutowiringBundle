@@ -35,6 +35,6 @@ final class RouteResourcePass implements CompilerPassInterface
             array_keys($container->findTaggedServiceIds(self::TAG_NAME))
         );
 
-        $container->getDefinition('rollerworks_route_autowiring.route_loader')->replaceArgument(2, $trackedResources);
+        $container->getDefinition('rollerworks_route_autowiring.route_loader')->replaceArgument(1, $trackedResources);
     }
 }

@@ -42,7 +42,7 @@ final class RouteResourcePassTest extends AbstractCompilerPassTestCase
         $this->compile();
 
         $loaderDef = $this->container->findDefinition('rollerworks_route_autowiring.route_loader');
-        $resources = $loaderDef->getArgument(2);
+        $resources = $loaderDef->getArgument(1);
 
         // Resources are provided as service References, but id cannot be predicted.
         // So instead loop trough each and analyze the actual referenced service definition.
