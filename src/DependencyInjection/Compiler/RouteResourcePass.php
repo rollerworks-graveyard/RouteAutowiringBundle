@@ -17,8 +17,6 @@ use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * RouteResourcePass registers the route resources on RouteSlotLoader service.
- *
- * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  */
 final class RouteResourcePass implements CompilerPassInterface
 {

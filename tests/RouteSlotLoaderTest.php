@@ -11,7 +11,9 @@
 
 namespace Rollerworks\Bundle\RouteAutowiringBundle\Tests;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
 use Rollerworks\Bundle\RouteAutowiringBundle\RouteSlotLoader;
 use Symfony\Component\Config\Resource\ResourceInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -39,10 +41,13 @@ final class RouteSlotLoaderTest extends TestCase
         $bR->add('backend/', 'BackendController', 'backend_main');
 
         $container = $this->prophesize(ContainerInterface::class);
-        $container->get($a = 'rollerworks_route_autowiring.routing_slot.frontend')->willReturn($aR);
-        $container->get($b = 'rollerworks_route_autowiring.routing_slot.backend')->willReturn($bR);
+        $container->has($a = 'frontend')->willReturn(true);
+        $container->get($a)->willReturn($aR);
+        $container->has($b = 'backend')->willReturn(true);
+        $container->get($b)->willReturn($bR);
+        $container->has(Argument::any())->willReturn(false);
 
-        $loader = new RouteSlotLoader($container->reveal(), ['frontend' => $a, 'backend' => $b]);
+        $loader = new RouteSlotLoader($container->reveal());
 
         self::assertInstanceOf(RouteCollection::class, $routeCollection = $loader->load('frontend'));
         self::assertArrayHasKey('main', $routeCollection->getIterator());
@@ -64,10 +69,12 @@ final class RouteSlotLoaderTest extends TestCase
         $routeCollectionBuilder->add('main/', 'MainController', 'main');
 
         $container = $this->prophesize(ContainerInterface::class);
-        $container->get($a = 'rollerworks_route_autowiring.routing_slot.frontend')->willReturn($routeCollectionBuilder);
+        $container->has($a = 'frontend')->willReturn(true);
+        $container->get($a)->willReturn($routeCollectionBuilder);
+        $container->has(Argument::any())->willReturn(false);
 
         $loader = new RouteSlotLoader(
-            $container->reveal(), ['frontend' => $a],
+            $container->reveal(),
             [$r = $this->createResourceStub(), $r2 = $this->createResourceStub('stub2')]
         );
 
@@ -88,7 +95,7 @@ final class RouteSlotLoaderTest extends TestCase
         self::assertContains($r2, $resources);
     }
 
-    private function createResourceStub($name = 'stub')
+    private function createResourceStub(string $name = 'stub')
     {
         $resource = $this->getMockBuilder(ResourceInterface::class)->getMock();
         $resource->expects(self::any())->method('__toString')->willReturn($name);
@@ -97,7 +104,7 @@ final class RouteSlotLoaderTest extends TestCase
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|ContainerInterface
+     * @return MockObject|ContainerInterface
      */
     private function getContainer()
     {

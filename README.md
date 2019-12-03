@@ -19,7 +19,7 @@ from a file or service you load them using the autowiring system.
 Requirements
 ------------
 
-You need at least PHP 7.1 and the Symfony FrameworkBundle.
+You need at least PHP 7.2 and the Symfony FrameworkBundle.
 
 Installation
 ------------

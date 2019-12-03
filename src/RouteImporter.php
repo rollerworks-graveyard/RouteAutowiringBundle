@@ -33,8 +33,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  * The `[...]/backend.yml` resource is registered in the backend routing-slot (with the type set explicitly).
  *
  * Then your routing file you load the `frontend` resource with type `rollerworks_autowiring`.
- *
- * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  */
 final class RouteImporter
 {
@@ -49,14 +47,12 @@ final class RouteImporter
     private $defaultSlot;
 
     /**
-     * Constructor.
-     *
      * @param ContainerBuilder $container   the ContainerBuilder instance
      *                                      for registering the service definitions on
      * @param string|null      $defaultSlot default slot for resources
      *                                      (can be overwritten per resource)
      */
-    public function __construct(ContainerBuilder $container, $defaultSlot = null)
+    public function __construct(ContainerBuilder $container, ?string $defaultSlot = null)
     {
         $this->container = $container;
         $this->defaultSlot = $defaultSlot;
@@ -86,7 +82,7 @@ final class RouteImporter
      *
      * @return $this The current instance
      */
-    public function addObjectResource($object)
+    public function addObjectResource(object $object)
     {
         $this->addClassResource(new \ReflectionClass($object));
 
@@ -122,7 +118,7 @@ final class RouteImporter
      *
      * @return $this The current instance
      */
-    public function import($resource, $slot = null, $type = null)
+    public function import($resource, ?string $slot = null, ?string $type = null)
     {
         if (null === $slot) {
             $slot = $this->defaultSlot;

@@ -14,6 +14,7 @@ namespace Rollerworks\Bundle\RouteAutowiringBundle\Tests\DependencyInjection\Com
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
 use Rollerworks\Bundle\RouteAutowiringBundle\DependencyInjection\Compiler\RouteAutowiringPass;
 use Rollerworks\Bundle\RouteAutowiringBundle\ResourceLoader;
+use Rollerworks\Bundle\RouteAutowiringBundle\RouteCollectionBuilder;
 use Rollerworks\Bundle\RouteAutowiringBundle\RouteImporter;
 use Rollerworks\Bundle\RouteAutowiringBundle\RouteSlotLoader;
 use Symfony\Component\Config\FileLocator;
@@ -21,7 +22,6 @@ use Symfony\Component\Config\Loader\LoaderResolver;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Routing\Loader\YamlFileLoader;
-use Symfony\Component\Routing\RouteCollectionBuilder;
 
 final class RouteAutowiringPassTest extends AbstractCompilerPassTestCase
 {
@@ -127,6 +127,6 @@ final class RouteAutowiringPassTest extends AbstractCompilerPassTestCase
             $paramValue[$slot] = 'rollerworks_route_autowiring.routing_slot.'.$slot;
         }
 
-        $this->assertContainerBuilderHasServiceDefinitionWithArgument('rollerworks_route_autowiring.route_loader', 1, $paramValue);
+        $this->assertContainerBuilderHasServiceDefinitionWithServiceLocatorArgument('rollerworks_route_autowiring.route_loader', 0, $paramValue);
     }
 }
