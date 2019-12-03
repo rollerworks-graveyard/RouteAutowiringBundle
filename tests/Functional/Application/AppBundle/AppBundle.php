@@ -12,11 +12,12 @@
 namespace Rollerworks\Bundle\RouteAutowiringBundle\Tests\Functional\Application\AppBundle;
 
 use Rollerworks\Bundle\RouteAutowiringBundle\Tests\Functional\Application\AppBundle\DependencyInjection\AppExtension;
+use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 final class AppBundle extends Bundle
 {
-    public function getContainerExtension()
+    public function getContainerExtension(): ?ExtensionInterface
     {
         return new AppExtension();
     }

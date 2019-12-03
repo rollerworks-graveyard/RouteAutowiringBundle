@@ -58,10 +58,10 @@ final class RouteSlotLoader extends Loader
      * @param mixed       $resource Some value that will resolve to a callable
      * @param string|null $type     The resource type
      *
-     * @return RouteCollection returns an empty RouteCollection object when noå routes
+     * @return RouteCollection returns an empty RouteCollection object when no routes
      *                         are registered for the slot
      */
-    public function load($resource, $type = null)
+    public function load($resource, string $type = null): RouteCollection
     {
         if (!isset($this->slots[$resource])) {
             $collection = new RouteCollection();
@@ -84,8 +84,8 @@ final class RouteSlotLoader extends Loader
      *
      * @return bool True if this class supports the given resource, false otherwise
      */
-    public function supports($resource, $type = null)
+    public function supports($resource, string $type = null): bool
     {
-        return $type === 'rollerworks_autowiring';
+        return 'rollerworks_autowiring' === $type;
     }
 }

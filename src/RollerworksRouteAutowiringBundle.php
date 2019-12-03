@@ -15,11 +15,12 @@ use Rollerworks\Bundle\RouteAutowiringBundle\DependencyInjection\Compiler\RouteA
 use Rollerworks\Bundle\RouteAutowiringBundle\DependencyInjection\Compiler\RouteResourcePass;
 use Rollerworks\Bundle\RouteAutowiringBundle\DependencyInjection\RouteAutowiringExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class RollerworksRouteAutowiringBundle extends Bundle
 {
-    public function getContainerExtension()
+    public function getContainerExtension(): ?ExtensionInterface
     {
         if (null === $this->extension) {
             $this->extension = new RouteAutowiringExtension();
@@ -28,13 +29,13 @@ class RollerworksRouteAutowiringBundle extends Bundle
         return $this->extension;
     }
 
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new RouteAutowiringPass());
         $container->addCompilerPass(new RouteResourcePass());
     }
 
-    protected function getContainerExtensionClass()
+    protected function getContainerExtensionClass(): string
     {
         return RouteAutowiringExtension::class;
     }

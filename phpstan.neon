@@ -1,10 +1,19 @@
+includes:
+	- /tools/.composer/vendor-bin/phpstan/vendor/phpstan/phpstan-phpunit/extension.neon
+
 parameters:
     autoload_files:
         - vendor/autoload.php
 
+    level: 5
+    paths:
+        - ./src
+#        - ./tests
+
+    checkNullables: false # To many false positives
     ignoreErrors:
         # Tests
-        - '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::[a-zA-Z0-9_]+\(\)#'
+        #- '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::[a-zA-Z0-9_]+\(\)#'
         #- '#Access to an undefined property Prophecy\\Prophecy\\ObjectProphecy::\$[a-zA-Z0-9_]+#'
         #- '#Call to an undefined method PHPUnit_Framework_MockObject_MockObject::[a-zA-Z0-9_]+\(\)#'
         #- '#expects\s+[^\s]+, PHPUnit_Framework_MockObject_MockObject(\[\])? given#'

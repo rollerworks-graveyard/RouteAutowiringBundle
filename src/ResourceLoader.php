@@ -27,7 +27,7 @@ final class ResourceLoader extends Loader
         $this->resolver = $resolver;
     }
 
-    public function load($resource, $type = null)
+    public function load($resource, string $type = null)
     {
         return $this->import($resource, $type);
     }
@@ -35,7 +35,7 @@ final class ResourceLoader extends Loader
     /**
      * Noop implementation, always returns false.
      */
-    public function supports($resource, $type = null)
+    public function supports($resource, string $type = null)
     {
         return false;
     }

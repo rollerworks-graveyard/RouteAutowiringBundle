@@ -25,7 +25,7 @@ use Symfony\Component\Routing\RouteCollectionBuilder;
 
 final class RouteAutowiringPassTest extends AbstractCompilerPassTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -43,7 +43,7 @@ final class RouteAutowiringPassTest extends AbstractCompilerPassTestCase
             ->setPublic(false);
 
         $this->container->register('file_locator', FileLocator::class)
-            ->setArguments([dirname(__DIR__).'/../Fixtures/']);
+            ->setArguments([\dirname(__DIR__).'/../Fixtures/']);
 
         $this->container->register('routing.loader', YamlFileLoader::class)
             ->setArguments([new Reference('file_locator')]);
@@ -113,7 +113,7 @@ final class RouteAutowiringPassTest extends AbstractCompilerPassTestCase
         $this->assertLoaderHasSlots(['main']);
     }
 
-    protected function registerCompilerPass(ContainerBuilder $container)
+    protected function registerCompilerPass(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new RouteAutowiringPass());
         $container->setParameter('kernel.debug', true);

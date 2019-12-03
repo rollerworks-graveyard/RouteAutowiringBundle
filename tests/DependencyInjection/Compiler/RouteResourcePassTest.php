@@ -22,7 +22,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class RouteResourcePassTest extends AbstractCompilerPassTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -59,7 +59,7 @@ final class RouteResourcePassTest extends AbstractCompilerPassTestCase
         // assertContains() doesn't work because of to much factors
         // we only care for the class and argument.
         foreach ($resourceServices as $resourceService) {
-            if ($resourceService->getClass() !== FileResource::class) {
+            if (FileResource::class !== $resourceService->getClass()) {
                 continue;
             }
 
@@ -91,7 +91,7 @@ final class RouteResourcePassTest extends AbstractCompilerPassTestCase
         $this->assertContainerBuilderHasServiceDefinitionWithArgument('rollerworks_route_autowiring.route_loader', 2, []);
     }
 
-    protected function registerCompilerPass(ContainerBuilder $container)
+    protected function registerCompilerPass(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new RouteResourcePass());
         $container->setParameter('kernel.debug', true);

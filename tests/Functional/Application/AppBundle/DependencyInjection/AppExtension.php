@@ -17,7 +17,7 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
 
 class AppExtension extends Extension
 {
-    public function load(array $config, ContainerBuilder $container)
+    public function load(array $config, ContainerBuilder $container): void
     {
         $routeImporter = new RouteImporter($container);
         $routeImporter->addObjectResource($this);
